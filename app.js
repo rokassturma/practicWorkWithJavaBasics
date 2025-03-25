@@ -4,6 +4,8 @@ Naudodamas šablonines eilutes, išvesk čekį, pvz., "Prekė: Pienas, kiekis: 2
 
 console.log('__________1 Uždavinys__________');
 
+
+
 function cekis(preke, kiekis, kaina) {
     let bendraSuma = kaina * kiekis;
     let kainaBePvm = bendraSuma * 0.79;
@@ -26,15 +28,14 @@ Funkcija grąžina patarimą:
 
 console.log('__________2 Uždavinys__________');
 
-function oruRekomendacija(temperatura, arLyja, vejoGreitis) {
-    if (temperatura >= 20 && arLyja === false && vejoGreitis <= 10) {
-        console.log(`Šiuo metu oro temperatūra: ${temperatura}°C. Nelyja. Vėjo greitis: ${vejoGreitis} km/h. Puikus oras pasivaikščiojimui!`);
-    } else if (arLyja === true && vejoGreitis > 30) {
-        console.log(`Šiuo metu oro temperatūra: ${temperatura}°C. Tačiau - lyja ir vėjo greitis ${vejoGreitis} km/h. Geriau likti namuose.`);
-    } else {
-        console.log(`Apsirenk pagal orą ir viskas bus gerai! Šiuo metu oro temperatūra: ${temperatura}°C. Vėjo greitis: ${vejoGreitis} km/h.`);
-    }
-}
+oruRekomendacija = (temperatura, arLyja, vejoGreitis) => (
+    temperatura >= 20 && !arLyja
+        ? console.log(`Šiuo metu oro temperatūra: ${temperatura}°C. Nelyja. Puikus oras pasivaikščiojimui!`) :
+        arLyja || vejoGreitis > 20
+            ? console.log(`Šiuo metu oro temperatūra: ${temperatura}°C. ${arLyja ? 'Lyja' : 'Nelyja'}. Vėjo greitis ${vejoGreitis}.`) :
+            console.log(`Apsirenk pagal orą ir viskas bus gerai! Šiuo metu oro temperatūra: ${temperatura}°C. Vėjo greitis: ${vejoGreitis} km/h. ${arLyja ? 'Lyja' : 'Nelyja'}`)
+)
+
 
 oruRekomendacija(15, false, 5);
 oruRekomendacija(20, true, 5);
@@ -57,24 +58,30 @@ console.log('');
 console.log('__________3 Uždavinys__________');
 
 
-let masinosGreitis = 90;
-let sunaudojimas = 7;
-let nuvaziuotasAtstumas = 0;
 
+function kiekNuvaziuos(bakoTalpa, masinosGreitis) {
+    let nuvaziuotasAtstumas = 0;
+    let sunaudojimas100Km = 7;
+    let sunaudojimasPagalGreiti = (sunaudojimas100Km * masinosGreitis) / 100;
 
-function kiekNuvaziuos(bakoTalpa) {
-    for (i = 1; i < bakoTalpa; i++) {
+    for (let i = 1; ; i++) {
+        if (bakoTalpa < sunaudojimas100Km) {
+            console.log(`Kuro nepakanka. Kelionė baigta.`);
+            break;
+        }
         nuvaziuotasAtstumas += masinosGreitis;
-        console.log(`Po ${i} val.: nuvažiuota ${nuvaziuotasAtstumas} km. Liko: ${bakoTalpa - sunaudojimas} kuro.`)
-        bakoTalpa -= 7;
+        bakoTalpa -= sunaudojimasPagalGreiti;
+        console.log(`Po ${i} val.: nuvažiuota ${nuvaziuotasAtstumas} km. Liko: ${bakoTalpa.toFixed(2)} l kuro.`);
+
         if (bakoTalpa < 7) {
-            console.log(`Važiuota valandų: ${i}, iš viso nuvažiuota: ${nuvaziuotasAtstumas} km. Liko: ${bakoTalpa} l kuro. Kelionė baigta!`);
+            console.log(`Iš viso važiuota valandų: ${i}, iš viso nuvažiuota: ${nuvaziuotasAtstumas} km. Liko: ${bakoTalpa.toFixed(2)} l kuro. Mašinos greitis buvo ${masinosGreitis} km/h. Kelionė baigta!`);
             break;
         }
     }
 }
 
-kiekNuvaziuos(50);
+
+kiekNuvaziuos(70, 110);
 
 
 /* 4 Uždavinys
@@ -85,11 +92,16 @@ paskirtas [ginklas] kovai!“
 console.log('');
 console.log('__________4 Uždavinys__________');
 
-let istoriniaiGinklai = ['Katana', 'Gladius', 'Morning Star', 'Halleberd', 'Tomahawk', 'Crossbow'];
 
-let ginkloIndeksas = Math.floor(Math.random() * istoriniaiGinklai.length);
+randomWeapon = () => {
+    let istoriniaiGinklai = ['Katana', 'Gladius', 'Morning Star', 'Halleberd', 'Tomahawk', 'Crossbow'];
+    let ginkloIndeksas = Math.floor(Math.random() * istoriniaiGinklai.length);
 
-console.log(`Hello, gladiator! You are fighting with ${istoriniaiGinklai[ginkloIndeksas]}`);
+    return console.log(`Hello, gladiator! You are fighting with ${istoriniaiGinklai[ginkloIndeksas]}`);
+
+};
+
+randomWeapon();
 
 
 
@@ -106,24 +118,24 @@ let piratas = {
     vardas: 'Jack Sparrow',
     laivas: 'The Back Pearl',
     lobisMonetomis: 5000,
-    grobis: Math.ceil(Math.random() * (50 - 10 + 1) + 10), // generuojamas atsitiktinis skaičius nuo 10 - 50.
     raid() {
-        this.lobisMonetomis += this.grobis
-        console.log(`    
+        const grobis = Math.ceil(Math.random() * (50 - 10 + 1) + 10);
+        this.lobisMonetomis += grobis;
+        return `    
 🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵
 ..................................
 Taramtam tam taramtam, taramtam tam taramtam,
 Taramtam tam taramtam, tam taram tam tam, tam tam!
 🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵🎵
 ...........................................
-Tave apiplėšė ${this.vardas} ir gavo ${this.grobis} monetų (monetas). Nuplaukė išdidžiai su savo laivu ${this.laivas}!
-`);
+Tave apiplėšė ${this.vardas} ir gavo ${grobis} monetų (monetas). Nuplaukė išdidžiai su savo laivu ${this.laivas}. Jo LOBIS: ${this.lobisMonetomis}!
+`;
     }
 }
 
-piratas.raid();
-console.log(piratas.lobisMonetomis);
-
+console.log(piratas.raid());
+console.log(piratas.raid());
+console.log(piratas.raid());
 
 
 /* 6 Uždavinys
@@ -133,34 +145,37 @@ raidžių (true/false) ir stiprumo įvertinimą („Silpnas“, „Vidutinis“,
 console.log('');
 console.log('__________6 Uždavinys__________');
 
-function slaptazodis(string) {
-    let slaptazodzioObjektas = {
-        slaptazodzioIlgis: string.length,
-        arYraSkaicius: string.split('').find(Number) ? true : false,
-        arYraDideliuRaidziu: /[A-Z]/.test(string), // pasitikrinimas dėl didelių raidžių
-        arPatikimas: '',
+const slaptazodis = (string) => {
 
-        //susikuriu patikimumo tikrinimą
-        patikimumas() {
-            if (this.slaptazodzioIlgis > 14 && this.arYraSkaicius === true && this.arYraDideliuRaidziu === true) {
-                this.arPatikimas = 'Stiprus';
-            } else if (this.slaptazodzioIlgis > 7 && this.arYraSkaicius === true && this.arYraDideliuRaidziu === true) {
-                this.arPatikimas = 'Vidutinis';
-            } else {
-                this.arPatikimas = 'Silpnas';
-            }
+        let slaptazodzioIlgis = string.length;
+        let arYraSkaicius = /\d/.test(string);
+        let arYraDideliuRaidziu = /[A-Z]/.test(string); // pasitikrinimas dėl didelių raidžių
+
+
+        let stiprumasTaskai = (slaptazodzioIlgis > 8 ? 1 : 0) + (arYraSkaicius ? 1 : 0) + (arYraDideliuRaidziu ? 1 : 0);
+        let stiprumas
+
+        if (stiprumasTaskai === 3) {
+            stiprumas = 'Stiprus';
+        } else if (stiprumasTaskai === 2) {
+            stiprumas = 'Vidutinis';
+        } else {
+            stiprumas = 'Silpnas';
         }
-    };
 
 
-    //paleidziu Objektui priskirtos funkciją dėl slaptažodžio patikrinimo ir grąžiniu objektą
-    slaptazodzioObjektas.patikimumas();
-    return slaptazodzioObjektas;
+        return {
+            slaptazodzioIlgis,
+            arYraSkaicius,
+            arYraDideliuRaidziu,
+            stiprumas
+        }
 }
 
 
 console.log(slaptazodis('katuveAeiki44444564564654'));
-console.log(slaptazodis('katinas'));
+console.log(slaptazodis('ka88888inas'));
+console.log(slaptazodis('daadssdaiojio'))
 
 
 
@@ -182,7 +197,7 @@ let darbuSarasas = [{ task: 'Atsikėlus palįsti po lediniu dušu', done: false 
 { task: 'Eiti laiku miegoti', done: false }];
 
 
-function pakeistiStatusa (darboPavadinimas, darbuSarasas) {
+const pakeistiStatusa = (darboPavadinimas, darbuSarasas) => {
     if (darbuSarasas.includes(darboPavadinimas.task)) {
         return { ...darboPavadinimas, done: true };
     }
@@ -202,19 +217,23 @@ kalorijomis.
 console.log('');
 console.log('__________8 Uždavinys__________');
 
-let perskaiciuotos = [];
 
-function pradinesKalorijos() {
-    let pradines = [550, 700, 770];
+let pradinesKalorijos = [550, 700, 770];
 
-    for (i = 0; i < pradines.length; i++) {
-        let perskaiciuota = pradines[i] * 1.1;
-        perskaiciuotos.push(parseFloat(perskaiciuota.toFixed()));
-    }
+
+const atnaujinimasKaloriju = (kalorijos, keitimoFunkcija) => {
+
+    return kalorijos.map(kalorija => parseFloat(keitimoFunkcija(kalorija).toFixed(2)));
 }
 
-pradinesKalorijos();
-console.log(perskaiciuotos);
+let prideti10proc = (cal) => cal * 1.10;
+let sumazintiDvigubai = (cal) => cal / 2;
+
+const plius = atnaujinimasKaloriju(pradinesKalorijos, prideti10proc);
+const maziau = atnaujinimasKaloriju(pradinesKalorijos, sumazintiDvigubai);
+
+console.log(plius);
+console.log(maziau);
 
 
 
@@ -224,32 +243,18 @@ console.log('');
 console.log('__________9 Uždavinys__________');
 
 
-function pradinesKainos() {
-    let kainos = [];
-    kainos.push(Math.ceil(3000 * Math.random()));
-    kainos.push(Math.ceil(5000 * Math.random()));
-    kainos.push(Math.ceil(1000 * Math.random()));
-    let nuolaida = 0.2;
-    let naujasMasyvas = [];
+const pirkiniai = [50, 100, 200];
 
-    console.log(`Nuolaida: ${nuolaida}`);
+const skaiciuotiSuNuolaida = (pradiniaiDuomenys, nuolaida = 0) => {
+    let suma = pradiniaiDuomenys.reduce((skaicius1, skaicius2) => skaicius1 + skaicius2, 0);
+    let koeficientas = 1 - nuolaida / 100
+    return (suma * koeficientas).toFixed(2);
 
-    for (k = 0; k < kainos.length; k++) {
-        let nuolaidosPaskaiciavimas = kainos[k] * nuolaida;
-        let kainaPoNuolaidos = kainos[k] - nuolaidosPaskaiciavimas;
-        naujasMasyvas.push(parseFloat(kainaPoNuolaidos.toFixed(2)));
+};
 
-    }
-    return naujasMasyvas;
-}
-
-let kainosPoNuolaidos = pradinesKainos();
-let bendraSuma = kainosPoNuolaidos.reduce((a, b) => a + b, 0).toFixed(2);
-
-
-console.log(kainosPoNuolaidos);
-console.log(`Visų pirkinių bendra suma yra: ${bendraSuma} Eur.`);
-
+console.log(skaiciuotiSuNuolaida(pirkiniai));
+console.log(skaiciuotiSuNuolaida(pirkiniai, 10));
+console.log(skaiciuotiSuNuolaida(pirkiniai, 30));
 
 
 /* 10 Uždavinys. CLOSURES
@@ -258,13 +263,13 @@ Ta nauja funkcija leidžia pridėti vieną treniruočių dieną ir išveda visas
 console.log('');
 console.log('__________10 Uždavinys__________');
 
-function treniruociuDienos () {
+function treniruociuDienos() {
     dienuMasyvas = ['Pirmadienis'];
 
-    return function kitosDienos (naujaDiena) {
+    return function kitosDienos(naujaDiena) {
         dienuMasyvas.push(naujaDiena)
     }
-} 
+}
 
 let prideti = treniruociuDienos();
 
