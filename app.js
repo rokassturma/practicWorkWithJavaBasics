@@ -304,6 +304,6 @@ const treniruociuDienos = (pradinisPlanas) => {
 
 const myPlan = treniruociuDienos(['Antradienis']);
 
-console.log(myPlan(' Antradienis'));
+
 console.log(myPlan(' Ketvirtadienis'));
 console.log(myPlan(' Penktadienis'));
