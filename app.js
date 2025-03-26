@@ -263,18 +263,47 @@ Ta nauja funkcija leidžia pridėti vieną treniruočių dieną ir išveda visas
 console.log('');
 console.log('__________10 Uždavinys__________');
 
-function treniruociuDienos() {
-    dienuMasyvas = ['Pirmadienis'];
+const sukurtiSkaitikli = () => {
+    let skaicius = 0
+    return () => ++skaicius;
+}
 
-    return function kitosDienos(naujaDiena) {
-        dienuMasyvas.push(naujaDiena)
+const skaitiklis = sukurtiSkaitikli();
+console.log(skaitiklis());
+console.log(skaitiklis());
+console.log(skaitiklis());
+
+
+// --------------------------------------------------------
+
+const sukurtiPirkiniuSkaicuokli = () => {
+    let kiekis = 0;
+
+    return (pridetiKieki) => {
+        kiekis += pridetiKieki;
+        return `bendras kiekis: ${kiekis}`
     }
 }
 
-let prideti = treniruociuDienos();
+const pirkiniuSkaicius = sukurtiPirkiniuSkaicuokli();
+console.log(pirkiniuSkaicius(3));
+console.log(pirkiniuSkaicius(2));
+console.log(pirkiniuSkaicius(8));
 
-prideti('Antradienis');
-prideti('Ketvirtadienis');
-prideti('Penktadienis');
 
-console.log(dienuMasyvas.join(', '))
+// --------------------------------------------------------
+
+const treniruociuDienos = (pradinisPlanas) => {
+    let treniruociuDienos = [...pradinisPlanas];
+
+    return (naujaDiena) => {
+        treniruociuDienos.push(naujaDiena);
+        return `Šiuo metu treniruočių dienos: ${treniruociuDienos.join(', ')}`;
+    }
+}
+
+const myPlan = treniruociuDienos(['Antradienis']);
+
+console.log(myPlan(' Antradienis'));
+console.log(myPlan(' Ketvirtadienis'));
+console.log(myPlan(' Penktadienis'));
